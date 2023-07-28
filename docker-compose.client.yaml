@@ -6,27 +6,15 @@ version: "3"
 
 services:
   backend-base:
-    image: harbor-devops.data-sports.org/sport-data-api/dev-client
+    image: harbor-devops.data-sports.org/sport-api-slave/develop:1.0.0
     restart: always
-    volumes:
-      - ./HEAD.env:/env/HEAD.env
+    # volumes:
+    #   - ./HEAD.env:/env/HEAD.env
     # We don't share depends_on with other services because it's docker limit
     environment:
-      # SQLALCHEMY_HOST: client-sport-db
-      # SQLALCHEMY_ACCOUNT: postgres
-      # SQLALCHEMY_PASSWORD: IIIdevops123! #${III_DB_PASSWORD}
-      # SQLALCHEMY_DATABASE: sport-db
-      # SQLALCHEMY_TRACK_MODIFICATIONS: false
-      # WTF_CSRF_CHECK_DEFAULT: false
-      # JSON_AS_ASCII: false
-      # ADMIN_INIT_LOGIN: ${III_ADMIN_LOGIN}
-      # ADMIN_INIT_EMAIL: ${III_ADMIN_EMAIL}
-      # ADMIN_INIT_PASSWORD: ${III_ADMIN_PASSWORD}
-      # DEPLOYER_NODE_IP: ${IP_ADDR}
-      # REDIS_BASE_URL: client-sport-redis:6379
-      SQLALCHEMY_DATABASE_URI: client-sport-db
+      SQLALCHEMY_DATABASE_URI: postgresql://postgres:IIIdevops123!@10.20.0.43:5432/client #client-sport-db:5432
       SQLALCHEMY_TRACK_MODIFICATIONS: false
-      MONGODB_URL: client-mongodb
+      MONGODB_URL: mongodb://iv9614:IIIdevops123!@10.20.0.43:27017/ #10.20.0.43:27017
       JWT_SECRET_KEY: x4QkyoxjiT7oQmVnv3_i
       WTF_CSRF_CHECK_DEFAULT: false
       JSON_AS_ASCII: false
@@ -37,7 +25,7 @@ services:
       DEBUG: true
       USE_RELOADER: true
       DOCUMENT_LEVEL: private
-      REDIS_BASE_URL: client-sport-redis
+      REDIS_BASE_URL: 10.20.0.43:6379
       ORGANIZE_DEFAULT_PASSWORD: IIISport12345!
       BRANCH: develop
       POD_SERVICE: sport-data-api-develop-serv-svc

@@ -50,29 +50,44 @@ services:
       MONGO_INITDB_ROOT_USERNAME: iv9614
       MONGO_INITDB_ROOT_PASSWORD: IIIdevops123!
 
-  iii-devops-lite-api:
+  client-api:
     # <<: *default-logging
     extends:
       file: docker-compose.client.yaml
       service: backend-base
-    container_name: "sport-platform-api"
+    container_name: "sport-client-api"
     restart: on-failure
     depends_on:
-      gitlab:
+      client-sport-db:
         condition: service_started
-      sonarqube:
+      client-sport-redis:
         condition: service_started
-      redmine:
+      client-mongodb:
         condition: service_started
-      redis:
-        condition: service_started
-      iii-devops-lite-db:
-        condition: service_healthy
     ports:
-      - "${III_PORT}:10009"
-    volumes:
-      - iii-devops-lite-file:/opt/nfs
-      - iii-devops-lite-log:/logs
+      - "10010:10009" #"${III_PORT}:10009"
+    # volumes:
+    #   - iii-devops-lite-file:/opt/nfs
+    #   - iii-devops-lite-log:/logs
+
+  client-ui:
+    # <<: *default-logging
+    image: harbor-devops.data-sports.org/sportdata-ui/distribute-module:1.0.0
+    container_name: "sport-client-ui"
+    restart: always
+    labels:
+      - "autoheal=true"
+    depends_on:
+      - client-api
+    ports:
+      - "80:80"
+    environment:
+      VUE_APP_BASE_API: http://10.20.0.43:10010/
+    healthcheck:
+      test: curl --fail http://localhost/prod-api/swagger-ui/ || exit 1
+      interval: 10s
+      timeout: 1s
+      retries: 5
 
 volumes:
   client-sport-db:
