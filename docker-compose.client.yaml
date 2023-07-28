@@ -1,0 +1,53 @@
+# !!! DO NOT USE THIS FILE DIRECTLY !!!
+# This file is used by iiidevops-cli to generate docker-compose.yaml
+# Please only run docker-compose.yaml
+
+version: "3"
+
+services:
+  backend-base:
+    image: harbor-devops.data-sports.org/sport-data-api/dev-client
+    restart: always
+    volumes:
+      - ./HEAD.env:/env/HEAD.env
+    # We don't share depends_on with other services because it's docker limit
+    environment:
+      # SQLALCHEMY_HOST: client-sport-db
+      # SQLALCHEMY_ACCOUNT: postgres
+      # SQLALCHEMY_PASSWORD: IIIdevops123! #${III_DB_PASSWORD}
+      # SQLALCHEMY_DATABASE: sport-db
+      # SQLALCHEMY_TRACK_MODIFICATIONS: false
+      # WTF_CSRF_CHECK_DEFAULT: false
+      # JSON_AS_ASCII: false
+      # ADMIN_INIT_LOGIN: ${III_ADMIN_LOGIN}
+      # ADMIN_INIT_EMAIL: ${III_ADMIN_EMAIL}
+      # ADMIN_INIT_PASSWORD: ${III_ADMIN_PASSWORD}
+      # DEPLOYER_NODE_IP: ${IP_ADDR}
+      # REDIS_BASE_URL: client-sport-redis:6379
+      SQLALCHEMY_DATABASE_URI: client-sport-db
+      SQLALCHEMY_TRACK_MODIFICATIONS: false
+      MONGODB_URL: client-mongodb
+      JWT_SECRET_KEY: x4QkyoxjiT7oQmVnv3_i
+      WTF_CSRF_CHECK_DEFAULT: false
+      JSON_AS_ASCII: false
+      ADMIN_INIT_LOGIN: sysadmin
+      ADMIN_INIT_EMAIL: tech@iii-devops.org
+      ADMIN_INIT_PASSWORD: IIIdevops123!
+      DEPLOY_CERTIFICATE_ROOT_PATH:
+      DEBUG: true
+      USE_RELOADER: true
+      DOCUMENT_LEVEL: private
+      REDIS_BASE_URL: client-sport-redis
+      ORGANIZE_DEFAULT_PASSWORD: IIISport12345!
+      BRANCH: develop
+      POD_SERVICE: sport-data-api-develop-serv-svc
+      SUV_IP: 45.76.50.161
+      SUV_USER: root
+      SUV_PASSWORD: G9eBmLpbq?@-EsG
+      API_URL: https://127.0.0.1
+      PYTHONHASHSEED: 0
+      MASTER_URL: http://127.0.0.1:10009
+      MAX_NEXT_LOGIN_SEC: 900
+      MAX_ACCOUNT_RETRY_TIMES: 5
+      MAX_IP_RETRY_TIMES: 20
+      BLOCK_IP: 127.0.0.2

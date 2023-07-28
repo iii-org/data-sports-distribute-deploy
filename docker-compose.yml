@@ -1,0 +1,83 @@
+version: "3"
+
+services:
+  client-sport-db:
+    # <<: *default-logging
+    image: postgres:12
+    container_name: "client-sport-postgres"
+    restart: always
+    user: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - client-sport-db:/var/lib/postgresql/data
+    environment:
+      # POSTGRES_USER: root
+      POSTGRES_PASSWORD: IIIdevops123!
+      POSTGRES_DB: postgres
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  client-sport-redis:
+    # <<: *default-logging
+    image: redis:6.2.11
+    container_name: "client_redis"
+    restart: always
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=IIIdevops123!
+    # command: redis-server --save 20 1 --loglevel warning --requirepass IIIdevops123!
+    # volumes:
+    #   - cache:/data
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+
+  client-mongodb:
+    image: mongo:4
+    container_name: "client_mongo"
+    restart: always
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./docker_compose_file/mongodb:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: iv9614
+      MONGO_INITDB_ROOT_PASSWORD: IIIdevops123!
+
+  iii-devops-lite-api:
+    # <<: *default-logging
+    extends:
+      file: docker-compose.client.yaml
+      service: backend-base
+    container_name: "sport-platform-api"
+    restart: on-failure
+    depends_on:
+      gitlab:
+        condition: service_started
+      sonarqube:
+        condition: service_started
+      redmine:
+        condition: service_started
+      redis:
+        condition: service_started
+      iii-devops-lite-db:
+        condition: service_healthy
+    ports:
+      - "${III_PORT}:10009"
+    volumes:
+      - iii-devops-lite-file:/opt/nfs
+      - iii-devops-lite-log:/logs
+
+volumes:
+  client-sport-db:
+    driver: local
+  client-sport-redis:
+    driver: local
+  client-mongodb:
+    driver: local
