@@ -4,7 +4,7 @@ services:
   client-sport-db:
     # <<: *default-logging
     image: postgres:12
-    container_name: "client-sport-postgres"
+    container_name: "client-sport-db"
     restart: always
     user: postgres
     ports:
@@ -52,11 +52,10 @@ services:
 
   client-api:
     # <<: *default-logging
-    extends:
-      file: docker-compose.client.yaml
-      service: backend-base
+    image: sport-client-api:1.0.1
+    restart: always
     container_name: "sport-client-api"
-    restart: on-failure
+    # restart: on-failure
     depends_on:
       client-sport-db:
         condition: service_started
@@ -66,6 +65,34 @@ services:
         condition: service_started
     ports:
       - "10010:10009" #"${III_PORT}:10009"
+    environment:
+      SQLALCHEMY_DATABASE_URI: postgresql://postgres:IIIdevops123!@client-sport-db:5432/client #client-sport-db:5432
+      SQLALCHEMY_TRACK_MODIFICATIONS: false
+      MONGODB_URL: mongodb://iv9614:IIIdevops123!@client-mongodb:27017/ #10.20.0.43:27017
+      JWT_SECRET_KEY: x4QkyoxjiT7oQmVnv3_i
+      WTF_CSRF_CHECK_DEFAULT: false
+      JSON_AS_ASCII: false
+      ADMIN_INIT_LOGIN: sysadmin
+      ADMIN_INIT_EMAIL: tech@iii-devops.org
+      ADMIN_INIT_PASSWORD: IIIdevops123!
+      DEPLOY_CERTIFICATE_ROOT_PATH:
+      DEBUG: true
+      USE_RELOADER: true
+      DOCUMENT_LEVEL: private
+      REDIS_BASE_URL: client-sport-redis:6379
+      ORGANIZE_DEFAULT_PASSWORD: IIISport12345!
+      BRANCH: develop
+      POD_SERVICE: sport-data-api-develop-serv-svc
+      SUV_IP: 45.76.50.161
+      SUV_USER: root
+      SUV_PASSWORD: G9eBmLpbq?@-EsG
+      API_URL: https://127.0.0.1
+      PYTHONHASHSEED: 0
+      MASTER_URL: https://sport-data-api-dev-client.ingress-devops.data-sports.org/
+      MAX_NEXT_LOGIN_SEC: 900
+      MAX_ACCOUNT_RETRY_TIMES: 5
+      MAX_IP_RETRY_TIMES: 20
+      BLOCK_IP: 127.0.0.2
     # volumes:
     #   - iii-devops-lite-file:/opt/nfs
     #   - iii-devops-lite-log:/logs
@@ -82,7 +109,7 @@ services:
     ports:
       - "80:80"
     environment:
-      VUE_APP_BASE_API: http://10.20.0.43:10010/
+      API_URL: http://client-api:10009/ # http://10.20.0.43:10010/
     healthcheck:
       test: curl --fail http://localhost/prod-api/swagger-ui/ || exit 1
       interval: 10s
