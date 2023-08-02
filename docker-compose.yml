@@ -8,12 +8,12 @@ services:
     restart: always
     user: postgres
     ports:
-      - "5432:5432"
+      - "${SPORT_DB_PORT}:5432"
     volumes:
       - client-sport-db:/var/lib/postgresql/data
     environment:
       # POSTGRES_USER: root
-      POSTGRES_PASSWORD: IIIdevops123!
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: postgres
 
     healthcheck:
@@ -43,16 +43,16 @@ services:
     container_name: "client_mongo"
     restart: always
     ports:
-      - '27017:27017'
+      - '${MONGO_PORT}:27017'
     volumes:
       - ./docker_compose_file/mongodb:/data/db
     environment:
-      MONGO_INITDB_ROOT_USERNAME: iv9614
-      MONGO_INITDB_ROOT_PASSWORD: IIIdevops123!
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
 
   client-api:
     # <<: *default-logging
-    image: sport-client-api:1.0.1
+    image: iiiorg/sport-api-client:develop
     restart: always
     container_name: "sport-client-api"
     # restart: on-failure
@@ -64,20 +64,20 @@ services:
       client-mongodb:
         condition: service_started
     ports:
-      - "10010:10009" #"${III_PORT}:10009"
+      - "${SPORT_PORT}:10009"
     environment:
-      SQLALCHEMY_DATABASE_URI: postgresql://postgres:IIIdevops123!@client-sport-db:5432/client #client-sport-db:5432
-      SQLALCHEMY_TRACK_MODIFICATIONS: false
-      MONGODB_URL: mongodb://iv9614:IIIdevops123!@client-mongodb:27017/ #10.20.0.43:27017
+      SQLALCHEMY_DATABASE_URI: postgresql://postgres:${POSTGRES_PASSWORD}@client-sport-db:${SPORT_DB_PORT}/client #client-sport-db:5432
+      SQLALCHEMY_TRACK_MODIFICATIONS: "false"
+      MONGODB_URL: mongodb://${MONGO_ROOT}:${MONGO_PASSWORD}@client-mongodb:${MONGO_PORT}/ #10.20.0.43:27017
       JWT_SECRET_KEY: x4QkyoxjiT7oQmVnv3_i
-      WTF_CSRF_CHECK_DEFAULT: false
-      JSON_AS_ASCII: false
+      WTF_CSRF_CHECK_DEFAULT: "false"
+      JSON_AS_ASCII: "false"
       ADMIN_INIT_LOGIN: sysadmin
       ADMIN_INIT_EMAIL: tech@iii-devops.org
       ADMIN_INIT_PASSWORD: IIIdevops123!
       DEPLOY_CERTIFICATE_ROOT_PATH:
-      DEBUG: true
-      USE_RELOADER: true
+      DEBUG: "true"
+      USE_RELOADER: "true"
       DOCUMENT_LEVEL: private
       REDIS_BASE_URL: client-sport-redis:6379
       ORGANIZE_DEFAULT_PASSWORD: IIISport12345!
@@ -88,7 +88,7 @@ services:
       SUV_PASSWORD: G9eBmLpbq?@-EsG
       API_URL: https://127.0.0.1
       PYTHONHASHSEED: 0
-      MASTER_URL: https://sport-data-api-dev-client.ingress-devops.data-sports.org/
+      MASTER_URL: ${MASTER_URL}
       MAX_NEXT_LOGIN_SEC: 900
       MAX_ACCOUNT_RETRY_TIMES: 5
       MAX_IP_RETRY_TIMES: 20
@@ -99,7 +99,7 @@ services:
 
   client-ui:
     # <<: *default-logging
-    image: harbor-devops.data-sports.org/sportdata-ui/distribute-module:1.0.0
+    image: iiiorg/sport-ui-client:develop
     container_name: "sport-client-ui"
     restart: always
     labels:
