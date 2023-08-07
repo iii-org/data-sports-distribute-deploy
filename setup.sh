@@ -178,7 +178,7 @@ check_environs() {
     echo "$string"
   }
 
-  if [ -z "$SPORT_DB_PORT" ]; then
+  if [ -z "${SPORT_DB_PORT:-}" ]; then
     SPORT_DB_PORT="$(ask_port "database" "5432")"
     write_back_data "SPORT_DB_PORT" "$SPORT_DB_PORT"
     need_reload=true
@@ -190,7 +190,7 @@ check_environs() {
     fi
   fi
 
-  if [ -z "$POSTGRES_PASSWORD" ]; then
+  if [ -z "${POSTGRES_PASSWORD:-}" ]; then
     POSTGRES_PASSWORD="$(ask_password "database")"
     write_back_data "POSTGRES_PASSWORD" "$POSTGRES_PASSWORD" true
     need_reload=true
@@ -203,7 +203,7 @@ check_environs() {
   fi
 
   # Mongo
-  if [ -z "$MONGO_PORT" ]; then
+  if [ -z "${MONGO_PORT:-}" ]; then
     MONGO_PORT="$(ask_port "mongo" "27017")"
     write_back_data "MONGO_PORT" "$MONGO_PORT"
     need_reload=true
@@ -215,7 +215,7 @@ check_environs() {
     fi
   fi
 
-  if [ -z "$MONGO_ROOT" ]; then
+  if [ -z "${MONGO_ROOT:-}" ]; then
     MONGO_ROOT="$(ask_string "mongo root" "mongouser")"
     write_back_data "MONGO_ROOT" "$MONGO_ROOT"
     need_reload=true
@@ -227,7 +227,7 @@ check_environs() {
     fi
   fi
 
-  if [ -z "$MONGO_PASSWORD" ]; then
+  if [ -z "${MONGO_PASSWORD:-}" ]; then
     MONGO_PASSWORD="$(ask_password "mongo")"
     write_back_data "MONGO_PASSWORD" "$MONGO_PASSWORD" true
     need_reload=true
@@ -240,7 +240,7 @@ check_environs() {
   fi
 
   # Login service
-  if [ -z "$SPORT_PORT" ]; then
+  if [ -z "${SPORT_PORT:-}" ]; then
     SPORT_PORT="$(ask_port "login" "10009")"
     write_back_data "SPORT_PORT" "$SPORT_PORT"
     need_reload=true
@@ -252,7 +252,7 @@ check_environs() {
     fi
   fi
 
-  if [ -z "$INIT_ADMIN" ]; then
+  if [ -z "${INIT_ADMIN:-}" ]; then
     INIT_ADMIN="$(ask_string "login account" "admin")"
     write_back_data "INIT_ADMIN" "$INIT_ADMIN"
     need_reload=true
@@ -264,7 +264,7 @@ check_environs() {
     fi
   fi
 
-  if [ -z "$INIT_ADMIN_PASSWORD" ]; then
+  if [ -z "${INIT_ADMIN_PASSWORD:-}" ]; then
     INIT_ADMIN_PASSWORD="$(ask_password "login")"
     write_back_data "INIT_ADMIN_PASSWORD" "$INIT_ADMIN_PASSWORD" true
     need_reload=true
@@ -324,7 +324,7 @@ start_service() {
 
   INFO "Starting services..."
 
-#  $DOCKER_COMPOSER up -d
+  $DOCKER_COMPOSER up -d
 }
 
 post_message() {
