@@ -48,7 +48,7 @@ get_docker_version() {
   if command_exists docker; then
     DOCKER_VERSION="$(docker version --format '{{.Server.Version}}')"
   else
-    return
+    return 0
   fi
 
   if docker compose version &>/dev/null; then
@@ -77,7 +77,7 @@ check_docker_exist_or_install() {
       WARN "Please enter your sudo password to grant docker installation permission!"
       sudo -v
     fi
-    source "$base_dir"/scripts/install-docker.sh
+    "$base_dir"/scripts/install-docker.sh
   fi
 
   print_docker_version
@@ -324,7 +324,7 @@ start_service() {
 
   INFO "Starting services..."
 
-  $DOCKER_COMPOSER up -d
+  docker compose up -d
 }
 
 post_message() {
