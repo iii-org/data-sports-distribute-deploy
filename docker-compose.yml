@@ -45,7 +45,7 @@ services:
     ports:
       - '${MONGO_PORT}:27017'
     volumes:
-      - ./docker_compose_file/mongodb:/data/db
+      - client-mongodb:/data/db
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
@@ -68,7 +68,7 @@ services:
     environment:
       SQLALCHEMY_DATABASE_URI: postgresql://postgres:${POSTGRES_PASSWORD}@client-sport-db:${SPORT_DB_PORT}/client #client-sport-db:5432
       SQLALCHEMY_TRACK_MODIFICATIONS: "false"
-      MONGODB_URL: mongodb://${MONGO_ROOT}:${MONGO_PASSWORD}@client-mongodb:${MONGO_PORT}/ #10.20.0.43:27017
+      MONGODB_URL: mongodb://${MONGO_ROOT}:${MONGO_PASSWORD}@client-mongodb/ #10.20.0.43:27017
       JWT_SECRET_KEY: x4QkyoxjiT7oQmVnv3_i
       WTF_CSRF_CHECK_DEFAULT: "false"
       JSON_AS_ASCII: "false"
@@ -93,9 +93,9 @@ services:
       MAX_ACCOUNT_RETRY_TIMES: 5
       MAX_IP_RETRY_TIMES: 20
       BLOCK_IP: 127.0.0.2
-    # volumes:
-    #   - iii-devops-lite-file:/opt/nfs
-    #   - iii-devops-lite-log:/logs
+      # volumes:
+      #   - iii-devops-lite-file:/opt/nfs
+      # - client-api-logs:/logs
 
   client-ui:
     # <<: *default-logging
@@ -123,3 +123,5 @@ volumes:
     driver: local
   client-mongodb:
     driver: local
+  # client-api-logs:
+  #   driver: local
