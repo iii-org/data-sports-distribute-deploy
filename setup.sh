@@ -60,6 +60,12 @@ get_docker_version() {
     DOCKER_COMPOSER="docker-compose"
     DOCKER_COMPOSE_VERSION="$(docker-compose --version | grep -oP '(?<=version )[^,]+')"
   fi
+
+  # If DOCKER_COMPOSER is empty, failed the script
+  if [ -z "$DOCKER_COMPOSER" ]; then
+    ERROR "CAN NOT detect docker compose command, please check your docker installation."
+    exit 1
+  fi
 }
 
 print_docker_version() {
@@ -324,7 +330,7 @@ start_service() {
 
   INFO "Starting services..."
 
-  docker compose up -d
+  $DOCKER_COMPOSER up -d
 }
 
 post_message() {
