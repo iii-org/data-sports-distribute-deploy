@@ -66,6 +66,8 @@ get_docker_version() {
     ERROR "CAN NOT detect docker compose command, please check your docker installation."
     exit 1
   fi
+  
+  print_docker_version
 }
 
 print_docker_version() {
@@ -86,7 +88,7 @@ check_docker_exist_or_install() {
     "$base_dir"/scripts/install-docker.sh
   fi
 
-  print_docker_version
+  
 }
 
 load_env() {
@@ -344,8 +346,8 @@ main() {
   check_runas_root
   check_system_requirements
   network_connectivity_check
-  get_docker_version
   check_docker_exist_or_install
+  get_docker_version
   load_env
   check_environs
   print_environs
@@ -354,3 +356,4 @@ main() {
 }
 
 main "$@"
+
