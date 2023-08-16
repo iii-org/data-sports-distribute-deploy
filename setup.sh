@@ -66,7 +66,7 @@ get_docker_version() {
     ERROR "CAN NOT detect docker compose command, please check your docker installation."
     exit 1
   fi
-
+  
   print_docker_version
 }
 
@@ -79,7 +79,7 @@ print_docker_version() {
 }
 
 check_docker_exist_or_install() {
-  if [ -z $DOCKER_VERSION ]; then
+if [ ! command -v docker > /dev/null ]; then
     WARN "Docker is not installed, auto install docker..."
     if sudo_timeout_check; then
       WARN "Please enter your sudo password to grant docker installation permission!"
