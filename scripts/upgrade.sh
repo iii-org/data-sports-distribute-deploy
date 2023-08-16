@@ -32,6 +32,7 @@ done_script() {
       --remove-orphans \
       --detach
   fi
+  docker image prune -f
 }
 
 update_via_git() {
