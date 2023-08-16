@@ -6,8 +6,8 @@ BASEDIR="$(cd "$(dirname "$0")" && pwd)" # Base directory of this script
 PROJECT_DIR="$(dirname "$BASEDIR")"      # Default project directory
 USERNAME="$(whoami)"                     # Get current username
 
-GITHUB_NAME="data-sports-distribute-deploy"                                                                        # Default github project name
-BRANCH="master"          
+GITHUB_NAME="xxxxxxx"                                                                        # Default github project name
+BRANCH="master"                                                                              # Default branch
 TAR_DOWNLOAD_URL="https://github.com/iii-org/$GITHUB_NAME/archive/refs/heads/$BRANCH.tar.gz" # Default tar download url
 
 if [[ ! -f "$BASEDIR/common.sh" ]]; then
@@ -76,6 +76,11 @@ update_via_tar() {
 
   done_script
 }
+
+if [[ ! -f "$PROJECT_DIR"/.env ]]; then
+  ERROR "First, must execute setup.sh script."
+  exit 1
+fi
 
 if [[ ! "$(id -u)" -eq 0 ]]; then
   INFO "Changing permission of all files to current USERNAME (prevent permission issues)"
