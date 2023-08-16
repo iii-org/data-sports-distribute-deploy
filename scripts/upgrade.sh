@@ -6,8 +6,8 @@ BASEDIR="$(cd "$(dirname "$0")" && pwd)" # Base directory of this script
 PROJECT_DIR="$(dirname "$BASEDIR")"      # Default project directory
 USERNAME="$(whoami)"                     # Get current username
 
-GITHUB_NAME="xxxxxxx"                                                                        # Default github project name
-BRANCH="master"                                                                              # Default branch
+GITHUB_NAME="data-sports-distribute-deploy"                                                                        # Default github project name
+BRANCH="master"          
 TAR_DOWNLOAD_URL="https://github.com/iii-org/$GITHUB_NAME/archive/refs/heads/$BRANCH.tar.gz" # Default tar download url
 
 if [[ ! -f "$BASEDIR/common.sh" ]]; then
