@@ -334,8 +334,11 @@ start_service() {
 }
 
 post_message() {
+  local IP_ADDRESS
+  IP_ADDRESS="$(ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p')"
+
   INFO "Service started!"
-  INFO "You can visit ${GREEN}http://localhost:${SPORT_PORT}${NOFORMAT} to login"
+  INFO "You can visit ${GREEN}http://${IP_ADDRESS}${NOFORMAT} to login"
   INFO "Default account: ${GREEN}${INIT_ADMIN}${NOFORMAT}"
   INFO "Default password: ${GREEN}${INIT_ADMIN_PASSWORD}${NOFORMAT}"
 }
