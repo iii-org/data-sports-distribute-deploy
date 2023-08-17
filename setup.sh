@@ -25,7 +25,7 @@ check_system_requirements() {
 network_connectivity_check() {
   INFO "Checking network connectivity..."
   INFO "Checking ping..."
-  if : >/dev/tcp/8.8.8.8/53; then
+  if ping -c 1 8.8.8.8 >/dev/null 2>&1; then
     echo 'PONG!'
   else
     echo 'Ping failed.'
