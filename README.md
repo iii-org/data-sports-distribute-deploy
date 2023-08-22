@@ -1,24 +1,16 @@
-# To run the API server
+# To run the Data Sport client device.
+Before start data-sport device, You've to register account on https://www.data-sports.tw/#/SportData/Register, and login after register the account. If register success, You can execute the following command.
 
-You need a `config.py` file containing API keys or other sensitive information.
+First you've to clone the project on your desktop
+1. `$ git clone http://gitlab-devops.data-sports.org/root/sport-data-api.git`
+After that,  run the set.up script to install the client device
+2. `$ cd ~/distribute-deploy/`
+3. `$ ./setup.sh`
 
-1. Install python3.8+ and pip on your machine.
-2. `$ cd build/devops_api`
-3. `$ pip install -r requirements.txt`
-4. `$ mv _environments.json environments.json` # Or just place downloaded `environments.json` from somewhere else here
-5. `$ mv _k8s_config into $HOME/.kube/config` # Put kubernetes config file into $HOME/.kube/config
-5. `$ python apis/api.py` # Replace `python` command with your python3 executable on your platform
+After that, data-sport client will automatically install 
 
-# DevOps and testing integration platform on kubernetes
-
-----
-
-# Migrate from pre-Harbor version to V0.9.2
-
-1. API/migrate?to=orm
-2. Update database with `alembic upgrade head`
-3. API/migrate?to=0.9.2
-
-Mirror harbor image to docker hub
-
-Mirror local Image To Docker Hub iiorg/devops-api:develop
+# Update client device version
+1. `$ docker compose down -v` # If docker compose doesn't work, try docker-comsose down -v to shutdown the client service. 
+2. `$ git pull origin  http://gitlab-devops.data-sports.org/root/sport-data-api.git`
+3. `$ cd ~/distribute-deploy/scripts/`
+4. `$ ./upgrade.sh`
