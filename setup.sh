@@ -153,7 +153,7 @@ check_environs() {
     local password_name="$1"
     local default_password
     default_password="$(generate_random_string 20)"
-    local password
+    local password=""
 
     while true; do
       # read -rp "Please enter ${password_name} password (default: random string): " password
