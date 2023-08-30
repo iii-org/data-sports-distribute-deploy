@@ -156,7 +156,7 @@ check_environs() {
     local password
 
     while true; do
-      read -rp "Please enter ${password_name} password (default: random string): " password
+      # read -rp "Please enter ${password_name} password (default: random string): " password
       if [ -z "$password" ]; then
         password="$default_password"
       fi
@@ -258,30 +258,6 @@ check_environs() {
     fi
   fi
 
-  if [ -z "${INIT_ADMIN:-}" ]; then
-    INIT_ADMIN="$(ask_string "login account" "admin")"
-    write_back_data "INIT_ADMIN" "$INIT_ADMIN"
-    need_reload=true
-  else
-    if ! string_validator "$INIT_ADMIN"; then
-      INIT_ADMIN="$(ask_string "login account" "admin")"
-      write_back_data "INIT_ADMIN" "$INIT_ADMIN"
-      need_reload=true
-    fi
-  fi
-
-  if [ -z "${INIT_ADMIN_PASSWORD:-}" ]; then
-    INIT_ADMIN_PASSWORD="$(ask_password "login")"
-    write_back_data "INIT_ADMIN_PASSWORD" "$INIT_ADMIN_PASSWORD" true
-    need_reload=true
-  else
-    if ! password_validator "$INIT_ADMIN_PASSWORD"; then
-      INIT_ADMIN_PASSWORD="$(ask_password "login")"
-      write_back_data "INIT_ADMIN_PASSWORD" "$INIT_ADMIN_PASSWORD" true
-      need_reload=true
-    fi
-  fi
-
   if $need_reload; then
     INFO "Reloading environs..."
     load_env
@@ -298,8 +274,6 @@ print_environs() {
   INFO "Mongo DB password: ${GREEN}${MONGO_PASSWORD}${NOFORMAT}"
 
   INFO "Login port: ${GREEN}${SPORT_PORT}${NOFORMAT}"
-  INFO "Login account: ${GREEN}${INIT_ADMIN}${NOFORMAT}"
-  INFO "Login password: ${GREEN}${INIT_ADMIN_PASSWORD}${NOFORMAT}"
 
   INFO "Debug use url: ${GREEN}${MASTER_URL}${NOFORMAT}"
   INFO "======================================="
@@ -339,8 +313,6 @@ post_message() {
 
   INFO "Service started!"
   INFO "You can visit ${GREEN}http://${IP_ADDRESS}${NOFORMAT} to login"
-  INFO "Default account: ${GREEN}${INIT_ADMIN}${NOFORMAT}"
-  INFO "Default password: ${GREEN}${INIT_ADMIN_PASSWORD}${NOFORMAT}"
 }
 
 main() {
@@ -351,7 +323,6 @@ main() {
   get_docker_version
   load_env
   check_environs
-  print_environs
   start_service
   post_message
 }
