@@ -86,7 +86,7 @@ services:
       SUV_IP: 45.76.50.161
       SUV_USER: root
       SUV_PASSWORD: G9eBmLpbq?@-EsG
-      API_URL: https://127.0.0.1
+      API_URL: http://${IP_ADDRESS}:10009/
       PYTHONHASHSEED: 0
       MASTER_URL: ${MASTER_URL}
       MAX_NEXT_LOGIN_SEC: 900

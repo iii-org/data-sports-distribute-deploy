@@ -296,6 +296,8 @@ redis_check() {
 }
 
 start_service() {
+  local IP_ADDRESS
+
   if sudo_timeout_check; then
     INFO "We need sudo permission to check requirements, please enter your sudo password!"
     sudo -v
@@ -304,6 +306,8 @@ start_service() {
 
   INFO "Starting services..."
 
+  IP_ADDRESS="$(ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p')"
+  write_back_data "IP_ADDRESS" $IP_ADDRESS
   $DOCKER_COMPOSER up -d
 }
 
@@ -324,6 +328,7 @@ main() {
   load_env
   check_environs
   start_service
+  print_environs
   post_message
 }
 
