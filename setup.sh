@@ -328,7 +328,6 @@ main() {
   load_env
   check_environs
   start_service
-  print_environs
   post_message
 }
 
