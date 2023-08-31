@@ -34,7 +34,7 @@ git clone https://github.com/iii-org/data-sports-distribute-deploy.git
 In this step, we will run the setup script, and automatically install distribute device.
 To run the script, make sure you are in the project root directory, and run the following command
 ```shell
-cd ~/distribute-deploy/ 
+cd ~/data-sports-distribute-deploy/ 
 ./setup.sh
 ```
 
