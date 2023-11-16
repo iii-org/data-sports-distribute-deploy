@@ -7,6 +7,10 @@ set -euo pipefail
 base_dir="$(cd "$(dirname "$0")" && pwd)"
 source "$base_dir"/common.sh
 
+if ! command -v curl &> /dev/null; then
+    sudo apt-get install  -y -qq curl
+fi
+
 # Via https://get.docker.com/
 echo "[+] curl -s https://get.docker.com/ | bash"
 curl -s https://get.docker.com/ | bash
